@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -e
-MACHINE_IP="192.168.98.100"
+MACHINE_IP="192.168.99.100"
 MACHINE_NAME="kafka"
 SSH_USER="vagrant"
 SSH_PUBLIC_KEY=".vagrant/machines/default/virtualbox/private_key"
