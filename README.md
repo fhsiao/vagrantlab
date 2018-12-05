@@ -6,7 +6,13 @@ VirtualBox 5.2.22
 
 Set-up vagrant keys: (For docker-machine to ssh to the VM)
 
+Generate a new Key:
+
 ssh-keygen -t rsa -f .vagrant/machines/default/virtualbox/private_key
+
+Generate public key from private key:
+
+ssh-keygen -y -f .vagrant/machines/default/virtualbox/private_key > .vagrant/machines/default/virtualbox/private_key.pub
 
 # Run:
 vagrant up
