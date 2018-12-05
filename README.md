@@ -5,6 +5,7 @@ Vagrant 2.2.2
 VirtualBox 5.2.22
 
 Set-up vagrant keys: (For docker-machine to ssh to the VM)
+
 ssh-keygen -t rsa -f .vagrant/machines/default/virtualbox/private_key
 
 Run:
