@@ -4,7 +4,7 @@ yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 setenforce 0
 sudo sed -i 's/^SELINUX=.*/SELINUX=permissive/g' /etc/selinux/config
 cat /etc/selinux/config | grep SELINUX=
-yum install -y net-tools vim 
+yum install -y net-tools vim git
 # http://www.tecmint.com/install-php-5-6-on-centos-7/ 
 yum-config-manager --enable remi-php56
 yum install -y httpd
@@ -40,6 +40,10 @@ echo $'DBPassword=zabbix\n' >> /etc/zabbix/zabbix_server.conf
 echo $'php_value date.timezone America/Denver\n' >> /etc/httpd/conf.d/zabbix.conf
 systemctl restart zabbix-server zabbix-agent httpd
 systemctl enable zabbix-server zabbix-agent httpd
+SCRIPT
+
+$common = <<SCRIPT
+export DOCKER_HOST_IP=192.168.99.100
 SCRIPT
 
 Vagrant.configure(2) do |config|
