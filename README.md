@@ -10,12 +10,21 @@ ssh-keygen -t rsa -f .vagrant/machines/default/virtualbox/private_key
 Run:
 vagrant up
 
-Branch: zabbix
+# Branch: zabbix
 
 Install zabbix
 
-Branch: kafka
+# zabbix credentials
+DB uname: zabbix
+
+DB pword: zabbix
+
+Web uname: Admin
+
+Web pword: zabbix
+
+# Branch: kafka
 
 Set up Docker environment using docker-machine with "default Centos7 VM" instead of boot2docker 
 
-
+Execute: docker-machine.build
