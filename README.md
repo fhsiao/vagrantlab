@@ -8,8 +8,15 @@ Set-up vagrant keys: (For docker-machine to ssh to the VM)
 
 ssh-keygen -t rsa -f .vagrant/machines/default/virtualbox/private_key
 
-Run:
+# Run:
 vagrant up
+
+vagrant ssh
+
+or
+
+ssh -i .vagrant/machines/default/virtualbox/private_key vagrant@192.168.99.100
+
 
 # Branch: zabbix
 
