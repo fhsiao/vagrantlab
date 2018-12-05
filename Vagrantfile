@@ -16,6 +16,13 @@ Vagrant.configure(2) do |config|
 
   config.vm.provision "shell", inline: $yum
 
+  config.vm.network "forwarded_port", guest: 2181, host: 2181
+  config.vm.network "forwarded_port", guest: 8081, host: 8081
+  config.vm.network "forwarded_port", guest: 8082, host: 8082
+  config.vm.network "forwarded_port", guest: 8088, host: 8088
+  config.vm.network "forwarded_port", guest: 9021, host: 9021
+  config.vm.network "forwarded_port", guest: 9092, host: 9092
+
   config.vm.network "private_network", ip: "192.168.99.100" 
 #  config.vm.network "public_network", ip: "192.168.99.100"
 end
