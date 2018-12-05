@@ -11,9 +11,11 @@ Run:
 vagrant up
 
 Branch: zabbix
+
 Install zabbix
 
 Branch: kafka
+
 Set up Docker environment using docker-machine with "default Centos7 VM" instead of boot2docker 
 
 
