@@ -18,7 +18,9 @@ Vagrant.configure(2) do |config|
     override.vm.box_url = "https://cloud.centos.org/centos/7/vagrant/x86_64/images/CentOS-7-x86_64-Vagrant-1809_01.VirtualBox.box"
   end
 
-  config.vm.provision "shell", inline: $yum
+  config.vm.provision "shell", inline: $yu
+
+  config.vm.provision "shell", inline: $commonm
 
   config.vm.network "private_network", ip: "192.168.99.100" 
 #  config.vm.network "public_network", ip: "192.168.99.100"
