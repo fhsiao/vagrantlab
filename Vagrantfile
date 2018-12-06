@@ -4,6 +4,12 @@ yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 yum install -y net-tools vim git mlocate ngrep
 SCRIPT
 
+$offSlinux == <<SCRIPT
+setenforce 0
+sudo sed -i 's/^SELINUX=.*/SELINUX=permissive/g' /etc/selinux/config
+cat /etc/selinux/config | grep SELINUX=
+SCRIPT
+
 Vagrant.configure(2) do |config|
   config.vm.box = "centos/7"
 
@@ -16,6 +22,8 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.provision "shell", inline: $yum
+
+  config.vm.provision "shell", inline: $offSlinux
 
   config.vm.network "private_network", ip: "192.168.99.100" 
 #  config.vm.network "public_network", ip: "192.168.99.100"
