@@ -14,7 +14,7 @@ ${MACHINE_NAME}
 docker-machine env kafka
 eval $(docker-machine env kafka)
 export DOCKER_HOST_IP=192.168.99.100
-cd $(STACK)
+cd ${STACK}
 docker-compose up -d --build
 #../kafka-stack-docker-compose
 #docker-compose -f full-stack.yml up
