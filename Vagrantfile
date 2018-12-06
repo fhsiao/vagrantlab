@@ -4,10 +4,6 @@ yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 yum install -y net-tools vim git 
 SCRIPT
 
-$common = <<SCRIPT
-export DOCKER_HOST_IP=192.168.99.100
-SCRIPT
-
 Vagrant.configure(2) do |config|
   config.vm.box = "centos/7"
 
@@ -19,8 +15,6 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.provision "shell", inline: $yum
-
-  config.vm.provision "shell", inline: $common
 
   config.vm.network "private_network", ip: "192.168.99.100" 
 #  config.vm.network "public_network", ip: "192.168.99.100"
