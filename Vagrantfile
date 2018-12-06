@@ -4,7 +4,7 @@ yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 setenforce 0
 sudo sed -i 's/^SELINUX=.*/SELINUX=permissive/g' /etc/selinux/config
 cat /etc/selinux/config | grep SELINUX=
-yum install -y net-tools vim git
+yum install -y net-tools vim git mlocate ngrep
 # http://www.tecmint.com/install-php-5-6-on-centos-7/ 
 yum-config-manager --enable remi-php56
 yum install -y httpd
