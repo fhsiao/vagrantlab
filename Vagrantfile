@@ -18,7 +18,7 @@ yum-config-manager --enable rhel-7-server-optional-rpms
 yum install -y zabbix-server-mysql zabbix-agent zabbix-proxy-mysql zabbix-get zabbix-web-mysql
 SCRIPT
 
-$offSlinux == <<SCRIPT
+$offSlinux = <<SCRIPT
 setenforce 0
 sudo sed -i 's/^SELINUX=.*/SELINUX=permissive/g' /etc/selinux/config
 cat /etc/selinux/config | grep SELINUX=
