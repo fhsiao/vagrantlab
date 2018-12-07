@@ -1,9 +1,6 @@
 $yum = <<SCRIPT
 yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm
-setenforce 0
-sudo sed -i 's/^SELINUX=.*/SELINUX=permissive/g' /etc/selinux/config
-cat /etc/selinux/config | grep SELINUX=
 yum install -y net-tools vim git mlocate ngrep
 # http://www.tecmint.com/install-php-5-6-on-centos-7/ 
 yum-config-manager --enable remi-php56
@@ -19,6 +16,12 @@ sudo systemctl enable mariadb
 rpm -i https://repo.zabbix.com/zabbix/4.1/rhel/7/x86_64/zabbix-release-4.1-1.el7.noarch.rpm
 yum-config-manager --enable rhel-7-server-optional-rpms
 yum install -y zabbix-server-mysql zabbix-agent zabbix-proxy-mysql zabbix-get zabbix-web-mysql
+SCRIPT
+
+$offSlinux == <<SCRIPT
+setenforce 0
+sudo sed -i 's/^SELINUX=.*/SELINUX=permissive/g' /etc/selinux/config
+cat /etc/selinux/config | grep SELINUX=
 SCRIPT
 
 $sql = <<SCRIPT
@@ -54,6 +57,8 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.provision "shell", inline: $yum
+
+  config.vm.provision "shell", inline: $offSlinux
 
   config.vm.provision "shell", inline: $sql
 
