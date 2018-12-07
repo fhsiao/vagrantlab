@@ -4,7 +4,7 @@ yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 yum install -y net-tools vim git mlocate ngrep
 SCRIPT
 
-$offSlinux == <<SCRIPT
+$offSlinux = <<SCRIPT
 setenforce 0
 sudo sed -i 's/^SELINUX=.*/SELINUX=permissive/g' /etc/selinux/config
 cat /etc/selinux/config | grep SELINUX=
