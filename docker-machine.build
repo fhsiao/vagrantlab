@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -e
+MACHINE_IP="192.168.99.100"
+MACHINE_NAME="kafka"
+SSH_USER="vagrant"
+SSH_PUBLIC_KEY=".vagrant/machines/default/virtualbox/private_key"
+STACK="../cp-docker-images/examples/cp-all-in-one"
+# If you did an ssh-copy-id to the machine: ~/.ssh/id_rsa
+docker-machine create --driver generic \
+--generic-ip-address=${MACHINE_IP} \
+--generic-ssh-key ${SSH_PUBLIC_KEY} \
+--generic-ssh-user ${SSH_USER} \
+${MACHINE_NAME}
+docker-machine env kafka
+eval $(docker-machine env kafka)
+export DOCKER_HOST_IP=192.168.99.100
+cd ${STACK}
+docker-compose up -d --build
+#../kafka-stack-docker-compose
+#docker-compose -f full-stack.yml up
