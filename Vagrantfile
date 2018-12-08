@@ -17,10 +17,13 @@ $yum = <<SCRIPT
 yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 yum install -y net-tools vim git mlocate ngrep
+SCRIPT
+
+$yumZabbix = <<SCRIPT
 # http://www.tecmint.com/install-php-5-6-on-centos-7/ 
 yum-config-manager --enable remi-php56
 yum install -y httpd
-yum install -y php php-mcrypt php-cli php-gd php-curl php-mysql php-ldap php-zip php-fileinfo php-bcmath php-mbstring php-xml php-pear php-cgi php-common php-snmp php-gettext
+yum install -y php php-mcrypt php-cli php-gd php-curl php-mysql php-ldap php-zip php-fileinfo php-bcmath php-mbstring php-xml php-pear php-cgi php-common php-snmp php-gett    ext
 echo $'ServerSignature Off\nServerTokens Prod' >> /etc/httpd/conf/httpd.conf
 systemctl restart httpd.service
 php -v
@@ -89,6 +92,7 @@ Vagrant.configure(2) do |config|
       end
     end
     config.vm.provision "shell", inline: $yum
+    config.vm.provision "shell", inline: $yumZabbix
     config.vm.provision "shell", inline: $offSlinux
     config.vm.provision "shell", inline: $sql
     config.vm.provision "shell", inline: $zabbix
