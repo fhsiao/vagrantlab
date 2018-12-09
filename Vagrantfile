@@ -81,9 +81,9 @@ Vagrant.configure(2) do |config|
   when stack == 'kafka'
     # multi-machine definitions is lazy loaded and better to use a constant variable
     # https://www.vagrantup.com/docs/vagrantfile/tips.html
-    config.vm.define 'zabbix' do |zabbix|
-      zabbix.vm.box = "centos/7"
-      zabbix.vm.provider :virtualbox do |virtualbox, override|
+    config.vm.define 'kafka' do |kafka|
+      kafka.vm.box = "centos/7"
+      kafka.vm.provider :virtualbox do |virtualbox, override|
         virtualbox.memory = 4096
         virtualbox.cpus = 2
         override.vm.box_download_checksum_type = "sha256"
