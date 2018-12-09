@@ -3,7 +3,7 @@ set -e
 MACHINE_IP="192.168.99.100"
 MACHINE_NAME="kafka"
 SSH_USER="vagrant"
-SSH_PUBLIC_KEY=".vagrant/machines/default/virtualbox/private_key"
+SSH_PUBLIC_KEY=".vagrant/machines/kafka/virtualbox/private_key"
 STACK="../cp-docker-images/examples/cp-all-in-one"
 # If you did an ssh-copy-id to the machine: ~/.ssh/id_rsa
 docker-machine create --driver generic \
