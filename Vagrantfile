@@ -101,7 +101,7 @@ Vagrant.configure(2) do |config|
     config.vm.network "forwarded_port", guest: 9092, host: 9092
     config.vm.network "private_network", ip: "192.168.99.100"
     #config.vm.network "public_network", ip: "192.168.99.100"
-    config.trigger.after :up do |trigger|
+    config.trigger.after :all do |trigger|
       trigger.name = "Kafka Stack"
       trigger.info = "Installing Kafka stack!"
       trigger.run = {path: "docker-machine.build"}

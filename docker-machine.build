@@ -4,13 +4,17 @@ MACHINE_IP="192.168.99.100"
 MACHINE_NAME="kafka"
 SSH_USER="vagrant"
 SSH_PUBLIC_KEY=".vagrant/machines/kafka/virtualbox/private_key"
-STACK="../cp-docker-images/examples/cp-all-in-one"
+STACK="../cp-dccker-images/examples/cp-all-in-one"
+# Remove kafka docker machhine before creating a new one
+docker-machine rm kafka --force
+/usr/bin/ssh-keygen -y -f .vagrant/machines/kafka/virtualbox/private_key > .vagrant/machines/kafka/virtualbox/private_key.pub
 # If you did an ssh-copy-id to the machine: ~/.ssh/id_rsa
 docker-machine create --driver generic \
 --generic-ip-address=${MACHINE_IP} \
 --generic-ssh-key ${SSH_PUBLIC_KEY} \
 --generic-ssh-user ${SSH_USER} \
 ${MACHINE_NAME}
+/usr/bin/ssh-keygen -y -f .vagrant/machines/kafka/virtualbox/private_key > .vagrant/machines/kafka/virtualbox/private_key.pub
 docker-machine env kafka
 eval $(docker-machine env kafka)
 export DOCKER_HOST_IP=192.168.99.100
