@@ -89,11 +89,6 @@ Vagrant.configure(2) do |config|
         override.vm.box_download_checksum_type = "sha256"
         override.vm.box_download_checksum = "b24c912b136d2aa9b7b94fc2689b2001c8d04280cf25983123e45b6a52693fb3"
         override.vm.box_url = "https://cloud.centos.org/centos/7/vagrant/x86_64/images/CentOS-7-x86_64-Vagrant-1809_01.VirtualBox.box"
-        config.trigger.after :up do |trigger|
-          trigger.name = "Kafka Stack"
-          trigger.info = "Installing Kafka stack!"
-          trigger.run = {path: "docker-machine.build"}
-        end
       end
     end
     config.vm.provision "shell", inline: $yum
@@ -106,6 +101,11 @@ Vagrant.configure(2) do |config|
     config.vm.network "forwarded_port", guest: 9092, host: 9092
     config.vm.network "private_network", ip: "192.168.99.100"
     #config.vm.network "public_network", ip: "192.168.99.100"
+    config.trigger.after :up do |trigger|
+      trigger.name = "Kafka Stack"
+      trigger.info = "Installing Kafka stack!"
+      trigger.run = {path: "docker-machine.build"}
+    end
   when stack == 'zabbix'
     # multi-machine definitions is lazy loaded and better to use a constant variable
     # https://www.vagrantup.com/docs/vagrantfile/tips.html
