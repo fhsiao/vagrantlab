@@ -17,14 +17,57 @@ $yum = <<SCRIPT
 yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 yum update
-yum install -y net-tools vim git mlocate ngrep
+yum install -y net-tools vim git mlocate ngrep unzip wget
+SCRIPT
+
+$yumSpringApp = <<SCRIPT
+# Install NVM (Node Version Manager)
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+source ~/.bashrc
+nvm --version
+# nvm install node (Long Time Support)
+nvm install --lts
+node --version
+nvm ls
+npm install -g yarn
+yum install -y java-1.8.0-openjdk-devel
+cd /usr/local/src
+wget http://www-us.apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz
+tar -xf apache-maven-3.5.4-bin.tar.gz
+mv apache-maven-3.5.4/ apache-maven/ 
+cd /etc/profile.d/
+touch maven.sh
+echo '# Apache Maven Environment Variables' >> maven.sh
+echo '# MAVEN_HOME for Maven 1 - M2_HOME for Maven 2' >> maven.sh
+echo 'export M2_HOME=/usr/local/src/apache-maven' >> maven.sh
+echo 'export PATH=$PATH:$M2_HOME/bin' >> maven.sh 
+chmod +x maven.sh
+source /etc/profile.d/maven.sh
+mvn --version
+cd ~
+pwd
+# Install from spring.io:
+# npx create-react-app react-app
+# curl https://start.spring.io/starter.zip -d dependencies=web,devtools -d bootVersion=1.5.10.RELEASE -o spring-app.zip; unzip -B spring-app.zip -d react-app
+# cd react-app
+# echo >> "spring.resources.static-locations=file:build,classpath:/public,classpath:/static" >> ~/react-app/src/main/resources/application.properties
+# Install from github:
+git clone https://github.com/fhsiao/react-spring-app.git
+cd ~/react-spring-app/multi-module-app/frontend
+pwd
+yarn
+yarn start&
+cd ~/react-spring-app/multi-module-app
+pwd
+mvn clean install
+mvn spring-boot:run -pl backend&
 SCRIPT
 
 $yumZabbix = <<SCRIPT
 # http://www.tecmint.com/install-php-5-6-on-centos-7/ 
 yum-config-manager --enable remi-php56
 yum install -y httpd
-yum install -y php php-mcrypt php-cli php-gd php-curl php-mysql php-ldap php-zip php-fileinfo php-bcmath php-mbstring php-xml php-pear php-cgi php-common php-snmp php-gett    ext
+yum install -y php php-mcrypt php-cli php-gd php-curl php-mysql php-ldap php-zip php-fileinfo php-bcmath php-mbstring php-xml php-pear php-cgi php-common php-snmp php-gett
 echo $'ServerSignature Off\nServerTokens Prod' >> /etc/httpd/conf/httpd.conf
 systemctl restart httpd.service
 php -v
@@ -79,6 +122,7 @@ Vagrant.configure(2) do |config|
     config.vm.provision "shell", inline: $offSlinux
     config.vm.network "private_network", ip: "192.168.99.99"
     #config.vm.network "public_network", ip: "192.168.99.99"
+
   when stack == 'kafka'
     # multi-machine definitions is lazy loaded and better to use a constant variable
     # https://www.vagrantup.com/docs/vagrantfile/tips.html
@@ -107,6 +151,7 @@ Vagrant.configure(2) do |config|
       trigger.info = "Installing Kafka stack!"
       trigger.run = {path: "docker-machine.build"}
     end
+
   when stack == 'zabbix'
     # multi-machine definitions is lazy loaded and better to use a constant variable
     # https://www.vagrantup.com/docs/vagrantfile/tips.html
@@ -128,5 +173,25 @@ Vagrant.configure(2) do |config|
     config.vm.network "forwarded_port", guest: 80, host: 80
     config.vm.network "private_network", ip: "192.168.99.101"
     #config.vm.network "public_network", ip: "192.168.99.101"
+
+  when stack == 'web'
+    # multi-machine definitions is lazy loaded and better to use a constant variable
+    # https://www.vagrantup.com/docs/vagrantfile/tips.html
+    config.vm.define 'web' do |web|
+      web.vm.box = "centos/7"
+      web.vm.provider :virtualbox do |virtualbox, override|
+        virtualbox.memory = 4096
+        virtualbox.cpus = 2
+        override.vm.box_download_checksum_type = "sha256"
+        override.vm.box_download_checksum = "b24c912b136d2aa9b7b94fc2689b2001c8d04280cf25983123e45b6a52693fb3"
+        override.vm.box_url = "https://cloud.centos.org/centos/7/vagrant/x86_64/images/CentOS-7-x86_64-Vagrant-1809_01.VirtualBox.box"
+      end
+    end
+    config.vm.provision "shell", inline: $yum
+    config.vm.provision "shell", inline: $yumSpringApp
+    config.vm.provision "shell", inline: $offSlinux
+    config.vm.network "forwarded_port", guest: 8080, host: 8080
+    config.vm.network "forwarded_port", guest: 3000, host: 3000
+    config.vm.network "private_network", ip: "192.168.99.102"
   end
 end
